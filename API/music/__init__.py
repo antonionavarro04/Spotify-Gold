@@ -9,6 +9,10 @@ import time
 
 def deleteFile(file_name: str):
     # sleep for 10 seconds to allow the file to be downloaded
+<<<<<<< HEAD
+=======
+    time.sleep(10)
+>>>>>>> 87f77af (Backup - 15:35 | 2023-11-25)
     abs_file_path = os.path.abspath(file_name)
     os.remove(abs_file_path)
 
@@ -22,7 +26,11 @@ musicBP = Blueprint('music', __name__)
 def get(code: str):
     url = "https://www.youtube.com/watch?v=" + code
     yt = pt.YouTube(url)
+<<<<<<< HEAD
     vid = yt.streams.filter(only_audio=True, abr="320kbps").first()
+=======
+    vid = yt.streams.filter(only_audio=True).first()
+>>>>>>> 87f77af (Backup - 15:35 | 2023-11-25)
 
     file_name = ''.join(sc.choice(string.ascii_letters) for i in range(10)) + ".mp4"
     abs_file_path = os.path.abspath(file_name); print(abs_file_path)
@@ -36,3 +44,7 @@ def get(code: str):
     mp.Process(target=deleteFile, args=(abs_file_path,)).start()
 
     return response, 200
+<<<<<<< HEAD
+=======
+
+>>>>>>> 87f77af (Backup - 15:35 | 2023-11-25)
