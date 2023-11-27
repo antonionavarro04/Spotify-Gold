@@ -9,7 +9,6 @@ import time
 
 def deleteFile(file_name: str):
     # sleep for 10 seconds to allow the file to be downloaded
-    time.sleep(10)
     abs_file_path = os.path.abspath(file_name)
     os.remove(abs_file_path)
 
