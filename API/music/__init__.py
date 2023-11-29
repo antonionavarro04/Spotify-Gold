@@ -22,7 +22,7 @@ musicBP = Blueprint('music', __name__)
 def get(code: str):
     url = "https://www.youtube.com/watch?v=" + code
     yt = pt.YouTube(url)
-    vid = yt.streams.filter(only_audio=True).first()
+    vid = yt.streams.filter(only_audio=True, abr="320kbps").first()
 
     file_name = ''.join(sc.choice(string.ascii_letters) for i in range(10)) + ".mp4"
     abs_file_path = os.path.abspath(file_name); print(abs_file_path)
@@ -36,4 +36,3 @@ def get(code: str):
     mp.Process(target=deleteFile, args=(abs_file_path,)).start()
 
     return response, 200
-
