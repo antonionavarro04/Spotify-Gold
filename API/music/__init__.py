@@ -10,9 +10,15 @@ import time
 def deleteFile(file_name: str):
     # sleep for 10 seconds to allow the file to be downloaded
 <<<<<<< HEAD
+<<<<<<< HEAD
     time.sleep(10)
 =======
 >>>>>>> f23f55d914d5962fc003643e196ae4cc931e725c
+=======
+=======
+    time.sleep(10)
+>>>>>>> 87f77af (Backup - 15:35 | 2023-11-25)
+>>>>>>> backup
     abs_file_path = os.path.abspath(file_name)
     os.remove(abs_file_path)
 
@@ -27,10 +33,17 @@ def get(code: str):
     url = "https://www.youtube.com/watch?v=" + code
     yt = pt.YouTube(url)
 <<<<<<< HEAD
+<<<<<<< HEAD
     vid = yt.streams.filter(only_audio=True).first()
 =======
     vid = yt.streams.filter(only_audio=True, abr="320kbps").first()
 >>>>>>> f23f55d914d5962fc003643e196ae4cc931e725c
+=======
+    vid = yt.streams.filter(only_audio=True, abr="320kbps").first()
+=======
+    vid = yt.streams.filter(only_audio=True).first()
+>>>>>>> 87f77af (Backup - 15:35 | 2023-11-25)
+>>>>>>> backup
 
     file_name = ''.join(sc.choice(string.ascii_letters) for i in range(10)) + ".mp4"
     abs_file_path = os.path.abspath(file_name); print(abs_file_path)
@@ -45,6 +58,12 @@ def get(code: str):
 
     return response, 200
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> f23f55d914d5962fc003643e196ae4cc931e725c
+=======
+=======
+
+>>>>>>> 87f77af (Backup - 15:35 | 2023-11-25)
+>>>>>>> backup
