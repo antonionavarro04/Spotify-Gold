@@ -6,7 +6,7 @@ import time
 import file_manager as fm
 from mutagen.mp3 import MP3
 
-musicBP = Blueprint('music', __name__)
+queryBP = Blueprint('query', __name__)
 
 def deleteFile(audio: str) -> None:
     """
@@ -50,17 +50,28 @@ def reduceKBPS(current_kbps: int) -> int:
     
     return new_kbps
 
-@musicBP.get('/<string:code>')
-def get(code: str):
-    # Load the video
-    url = "https://www.youtube.com/watch?v=" + code
+@queryBP.get('/<string:query>')
+def get(query: str):
+    # Load the video, query parameter is for example: Best music 2020
+    url = "https://www.youtube.com/results?search_query=hola"
     yt = pt.YouTube(url)
+
+    # Get the first video from the search results
+    url = "https://www.youtube.com" + yt.results[0].url_suffix
+
+    # Load the video
+    yt = pt.YouTube(url)
+
+    stream = yt.streams.get_highest_resolution()
 
     vid = None
     kbps = 320
 
     while (vid == None):
-        vid = yt.streams.filter(only_audio=True, abr=f"{kbps}kbps").first()
+        # Get the video
+        vid = yt.streams.filter(only_audio=True, abr=f'{kbps}kbps').first()
+
+        # Reduce the KBPS
         kbps = reduceKBPS(kbps)
 
     # Generate a random file name and get the absolute path
@@ -68,7 +79,7 @@ def get(code: str):
     absoluteAudioPath = os.path.abspath(fileName)
 
     # Download the video
-    vid.download(filename=fileName)
+    stream.download(filename=fileName)
 
     # Send the file    
     response = send_file(absoluteAudioPath, as_attachment=True)
