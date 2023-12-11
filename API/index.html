@@ -76,6 +76,56 @@
         font-size: 10px;
       }
 
+      input {
+        background-color: #000;
+        color: #fff;
+        border: 1px solid #ff0;
+        border-radius: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        transition: 125ms;
+      }
+
+      input:hover {
+        background-color: #111;
+        color: #ff0;
+        border: 1px solid #ff0;
+        border-radius: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        transition: 125ms;
+      }
+
+      input:focus {
+        background-color: #111;
+        color: #ff0;
+        border: 1px solid #ff0;
+        border-radius: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        transition: 125ms;
+      }
+
+      input::placeholder {
+        color: #ff0;
+      }
+
+      input:focus::placeholder {
+        color: #ff0;
+      }
+
+      input:hover::placeholder {
+        color: #ff0;
+      }
+
+      input:focus::placeholder {
+        color: #ff0;
+      }
+
+      input::placeholder {
+        color: #ff0;
+      }
+
       @keyframes rgb {
         0% {
           color: rgb(255, 0, 0);
@@ -118,7 +168,7 @@
     <input type="text" id="searchId" placeholder="Enter the YouTube id" />
 
     <h1 class="name">Antonio Navarro</h1>
-    <h1 class="version">ALPHA</h1>
+    <h1 class="version">ALPHA | Jeray Putero</h1>
   </body>
 
   <script>
