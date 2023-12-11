@@ -114,7 +114,8 @@
     <h3><a href="https://github.com/antonionavarro04/Spotify-Gold" target="_blank">Github Repo</a></h3>
     <h3><a href="https://github.com/users/antonionavarro04/projects/1" target="_blank">Github Project</a></h3>
 
-    <input type="text" id="search" placeholder="Enter the YouTube id" />
+    <input type="text" id="searchLink" placeholder="Enter the YouTube link" />
+    <input type="text" id="searchId" placeholder="Enter the YouTube id" />
 
     <h1 class="name">Antonio Navarro</h1>
     <h1 class="version">ALPHA</h1>
@@ -122,18 +123,25 @@
 
   <script>
     // Get the search input
-    let search = document.querySelector("#search");
+    let searchLink = document.querySelector("#searchLink");
+    let searchId = document.querySelector("#searchId");
 
     // Redirect to /music/{id}
-    search.addEventListener("keyup", (e) => {
+    searchLink.addEventListener("keyup", (e) => {
       if (e.keyCode === 13) {
         // Video Id it's just the value next to 
-        let videoId = search.value.split("youtu.be/")[1];
+        let videoId = searchLink.value.split("youtu.be/")[1];
         videoId = videoId.split("?")[0];
         console.log(videoId);
         window.location.href = "/music/" + videoId;
       }
-    });    
+    });
+
+    searchId.addEventListener("keyup", (e) => {
+      if (e.keyCode === 13) {
+        window.location.href = "/music/" + searchId.value;
+      }
+    });
   </script>
 
   <script>

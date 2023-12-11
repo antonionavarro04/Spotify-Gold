@@ -4,7 +4,6 @@ import os
 import multiprocessing as mp
 import time
 import file_manager as fm
-from mutagen.mp3 import MP3
 
 musicBP = Blueprint('music', __name__)
 
