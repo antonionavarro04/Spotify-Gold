@@ -56,7 +56,7 @@ def get(query: str):
     yt = pt.YouTube(url)
 
     # Get the first video from the search results
-    url = "https://www.youtube.com" + yt.results[0].url_suffix
+    url = "https://www.youtube.com/" + yt.results[0].url_suffix
 
     # Load the video
     yt = pt.YouTube(url)
