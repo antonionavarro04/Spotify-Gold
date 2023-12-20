@@ -4,87 +4,44 @@ import os
 import multiprocessing as mp
 import time
 import file_manager as fm
+from secret_variables import youtube_data_api_key as api_key
+import googleapiclient.discovery as YTAPIdiscovery
+from ..music import deleteFile, reduceKBPS
 
 queryBP = Blueprint('query', __name__)
 
-def deleteFile(audio: str) -> None:
-    """
-    Deletes the audio file
-
-    Parameters
-    ----------
-    audio : str
-        The audio file to delete
-
-    Returns
-    -------
-    None
-    """
-
-    time.sleep(60)
-    os.remove(audio)
-
-def reduceKBPS(current_kbps: int) -> int:
-    """
-    Reduces the KBPS by 1 level\n
-    320 -> 128\n
-    128 -> 64\n
-    64 -> 32
-
-    Parameters
-    ----------
-    current_kbps : int
-        The current KBPS of the video
-
-    Returns
-    -------
-    int
-        The reduced KBPS
-    """
-
-    new_kbps = 64
-
-    if (current_kbps == 320):
-        new_kbps = 128
-    
-    return new_kbps
-
 @queryBP.get('/<string:query>')
 def get(query: str):
-    # Load the video, query parameter is for example: Best music 2020
-    url = "https://www.youtube.com/results?search_query=hola"
-    yt = pt.YouTube(url)
+    # Strip the query
+    query = query.strip()
+    print(f"Query is: {query} with a length of {len(query)}")
 
-    # Get the first video from the search results
-    url = "https://www.youtube.com/" + yt.results[0].url_suffix
+    # Create the service object
+    results = YTAPIdiscovery.build("youtube", "v3", developerKey=api_key)
 
-    # Load the video
-    yt = pt.YouTube(url)
+    # ! Make the request
+    request = results.search().list(
+        part="snippet",
+        q=query,
+        maxResults=50
+    )
+    response = request.execute()
 
-    stream = yt.streams.get_highest_resolution()
+    # ! Extract the information
+    videos = []
+    for item in response["items"]:
+        try:
+            videos.append({
+                "title": item["snippet"]["title"],
+                "videoId": item["id"]["videoId"],
+                "url": f"https://www.youtube.com/watch?v={item['id']['videoId']}",
+                "thumbnail": item["snippet"]["thumbnails"]["high"]["url"],
+                "channel": item["snippet"]["channelTitle"]
+            })
+        except KeyError: # Catch this error, not sure what happens sometimes
+            print(f"KeyError: Skipping item {item['snippet']['title']}")
 
-    vid = None
-    kbps = 320
-
-    while (vid == None):
-        # Get the video
-        vid = yt.streams.filter(only_audio=True, abr=f'{kbps}kbps').first()
-
-        # Reduce the KBPS
-        kbps = reduceKBPS(kbps)
-
-    # Generate a random file name and get the absolute path
-    fileName = fm.randomName(extension="mp3")
-    absoluteAudioPath = os.path.abspath(fileName)
-
-    # Download the video
-    stream.download(filename=fileName)
-
-    # Send the file    
-    response = send_file(absoluteAudioPath, as_attachment=True)
-
-    # Delete the files
-    mp.Process(target=deleteFile, args=(absoluteAudioPath,)).start()
+    print(f"Found {len(videos)} videos")
 
     # Return the response
-    return response, 200
+    return videos, 200
