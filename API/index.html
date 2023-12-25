@@ -157,13 +157,14 @@
 
   <body>
     <h1>Spotify Gold API</h1>
-    <p>Connecting...</p><br><br>
+    <p>Connecting...</p>  
 
     <h3><a href="https://github.com/antonionavarro04/Spotify-Gold" target="_blank">Github Repo</a></h3>
     <h3><a href="https://github.com/users/antonionavarro04/projects/1" target="_blank">Github Project</a></h3>
-
-    <input type="text" id="searchLink" placeholder="Enter the YouTube link" />
-    <input type="text" id="searchId" placeholder="Enter the YouTube id" />
+    <br>
+    <input type="text" id="searchLink" placeholder="Enter the YouTube link" /><br><br>
+    <input type="text" id="searchId" placeholder="Enter the YouTube id" /><br><br>
+    <input type="text" id="searchName" placeholder="Enter the song name" />
 
     <h1 class="name">Antonio Navarro</h1>
     <h1 class="version">ALPHA | Jeray Putero</h1>
@@ -215,5 +216,19 @@
       // Print the time to the document, each second
       document.querySelector("p").innerHTML = formattedTime;
     }, 1000);
+  </script>
+
+  <script>
+    // Get the search input
+    let searchName = document.querySelector("#searchName");
+
+    // Redirect to /music/{id}
+    searchName.addEventListener("keyup", (e) => {
+      if (e.keyCode === 13) {
+        // Video Id it's just the value next to 
+        let videoName = searchName.value;
+        window.location.href = "/query/" + videoName;
+      }
+    });
   </script>
 </html>
