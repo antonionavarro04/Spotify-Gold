@@ -12,6 +12,7 @@ import file_manager as fm
 import pytube.exceptions as pt_ex
 
 queryBP = Blueprint('query', __name__)
+
 # Create the service object
 ytapi = YTAPIdiscovery.build("youtube", "v3", developerKey=api_key)
 
