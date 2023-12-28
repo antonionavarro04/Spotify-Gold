@@ -27,9 +27,9 @@ def deleteFile(audio: str) -> None:
 def reduceKBPS(current_kbps: int) -> int:
     """
     Reduces the KBPS by 1 level\n
+    321 -> 320\n
     320 -> 128\n
-    128 -> 64\n
-    64 -> 32
+    128 -> 64
 
     Parameters
     ----------
@@ -46,6 +46,8 @@ def reduceKBPS(current_kbps: int) -> int:
 
     if (current_kbps == 320):
         new_kbps = 128
+    elif (current_kbps == 321):
+        new_kbps = 320
     
     return new_kbps
 

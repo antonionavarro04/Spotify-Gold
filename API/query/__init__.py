@@ -2,6 +2,7 @@
 import os
 import multiprocessing as mp
 import json
+import html
 
 # Third-party
 from flask import Blueprint, jsonify, request, send_file, Response
@@ -13,6 +14,7 @@ import pytube.exceptions as pt_ex
 from secret_variables import youtube_data_api_key as api_key
 from ..music import deleteFile, reduceKBPS
 import file_manager as fm
+import API.functions as fx
 
 # Blueprint
 queryBP = Blueprint('query', __name__)
@@ -70,9 +72,16 @@ def getJson() -> Response:
 
 @queryBP.get('/<string:query>')
 def get(query: str) -> Response:
-    # Strip the query
+    # Strip the query and unescape it
     query = query.strip()
-    print(f"Query is: {query} with a length of {len(query)}")
+
+    try: # FIXED: Issue #17 -> https://github.com/antonionavarro04/Spotify-Gold-API/issues/17
+        print(f"Query is: {query} with a length of {len(query)}")
+    except UnicodeEncodeError:
+        query = fx.decode_unicode(query)
+        print(f"Query is: {query} with a length of {len(query)}")
+    except Exception as e:
+        print(f"Unknown Error: {e}")
 
     # ! Make the request
     request = ytapi.search().list(
@@ -96,13 +105,17 @@ def get(query: str) -> Response:
         except KeyError: # Catch this error, not sure what happens sometimes
             print(f"KeyError: Skipping item {item['snippet']['title']}")
 
-    print(f"Found video: {json_response['title']} with a videoId of {json_response['videoId']}")
+    try: # FIXED: Issue #17 -> https://github.com/antonionavarro04/Spotify-Gold-API/issues/17
+        print(f"Found video: {json_response['title']} with a videoId of {json_response['videoId']}")
+    except UnicodeEncodeError:
+        json_response['title'] = fx.decode_unicode(json_response['title'])
+        print(f"Found video: {json_response['title']} with a videoId of {json_response['videoId']}")
 
     # Load the video
     yt = pt.YouTube(json_response['url'])
 
     # Get the audio file
-    kbps = 320
+    kbps = 321
 
     # Get the stream
     stream = None

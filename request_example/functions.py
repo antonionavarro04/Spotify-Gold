@@ -18,6 +18,7 @@ def decode_unicode(data: str) -> str:
 
 def decode_json(json_str: str) -> dict:
     import json
+    import html
     """
     Decode the json string from the header, this is because it contains characters like \u0026, unreadable for the json module
 
@@ -41,6 +42,10 @@ def decode_json(json_str: str) -> dict:
     # Decode Unicode characters in the parsed data
     json_con['title'] = decode_unicode(json_con['title'])
     json_con['channel'] = decode_unicode(json_con['channel'])
+
+    # Reverse the .escape function
+    json_con['title'] = html.unescape(json_con['title'])
+    json_con['channel'] = html.unescape(json_con['channel'])
 
     return json_con
 
