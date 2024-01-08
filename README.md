@@ -17,7 +17,7 @@ You can also request a mp3 using a http get requests with the following url. htt
 
 ### Technical issues I've encountered
 1. This types of libraries of pip are easy to use and ready to go, with just a few lines of code you can make big things to work out.
-2. Youtube V3 API is limited to just 10.000 units per day, this will make the service to stop working after 100 queries a day. In fact the day I'll create the Android App I won't implement the typical search that returns a list for each character you type, I'll just implement a search that returns a list of 100 songs when pressing a button cause it doesn't matter the number of results, just the number of queries.
+2. Youtube V3 API is limited to just 10.000 units per day, this will make the service to stop working after 100 queries a day. In fact the day I'll create the Android App I won't implement the typical search that returns a list for each character you type, I'll just implement a search that returns a list of 50 songs when pressing a button cause it doesn't matter the number of results, just the number of queries.
 
 ### Next features
 I want to implement a get response that return a JSON that return a list of songs with a term of search. In that manner it'll work just as YouTube. This will also be useful for the use of this API in my Kotlin App
