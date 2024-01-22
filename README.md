@@ -13,8 +13,8 @@ this will install all required pip dependencies for this server to work properly
 
 To run the server just execute 
 ```bash
-python run.py`
-``
+python run.py
+```
 
 ## Usage
 The server/API has a static web in the root directory that allows to use it more convenient, just open a browser and go to localhost and the port of the server (127.0.0.1:7483) then you have two text inputs. One that gets a mp3 from a YouTube share link (the one with youtu.be) and the other one that gets a mp3 from the video id (the one next to the v= parameter in the url) It'll process the information and return an mp3 in the maximum quality possible (320kbps, 128kbps or 64kbps).
