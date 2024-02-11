@@ -1,0 +1,13 @@
+D:\I\SPA\DAL\bin\Release\net8.0\DAL.deps.json
+D:\I\SPA\DAL\bin\Release\net8.0\DAL.dll
+D:\I\SPA\DAL\bin\Release\net8.0\DAL.pdb
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.csproj.AssemblyReference.cache
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.AssemblyInfoInputs.cache
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.AssemblyInfo.cs
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.csproj.CoreCompileInputs.cache
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.sourcelink.json
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.dll
+D:\I\SPA\DAL\obj\Release\net8.0\refint\DAL.dll
+D:\I\SPA\DAL\obj\Release\net8.0\DAL.pdb
+D:\I\SPA\DAL\obj\Release\net8.0\ref\DAL.dll
