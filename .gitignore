@@ -1,5 +1,2 @@
-__pycache__/
-.venv
 *.mp3
 *.mp4
-/secret_variables.py
