@@ -1,4 +1,4 @@
-# SPOTIFY GOLD API Repository
+# SPOTIFY GOLD API Repository (Deprecated)
 Author: Antonio Navarro | 2ºDAM IES Nervión
 
 ## General Information
