@@ -1,0 +1,16 @@
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\SpotifyGoldServer.exe
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\appsettings.json
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\SpotifyGoldServer.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\SpotifyGoldServer.deps.json
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\SpotifyGoldServer.runtimeconfig.json
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\SpotifyGoldServer.pdb
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\AngleSharp.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\CliWrap.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\MediaToolkit.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\Newtonsoft.Json.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\libvideo.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\YoutubeExplode.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\YoutubeExplode.Converter.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\DAL.dll
+D:\I\SPA\SpotifyGoldServer\obj\Release\net8.0\PubTmp\Out\DAL.pdb
