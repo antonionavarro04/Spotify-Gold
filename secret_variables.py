@@ -1,1 +1,1 @@
-youtube_data_api_key = "AIzaSyCpF_ikDRJwZz_HlIzhulM8gRz2FC6T1IM"
+youtube_data_api_key = ""
