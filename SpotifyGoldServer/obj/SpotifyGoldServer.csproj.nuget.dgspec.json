@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\I\\SPA\\SpotifyGoldServer\\SpotifyGoldServer.csproj": {}
+    "C:\\PROG\\SPG\\SpotifyGoldServer\\SpotifyGoldServer.csproj": {}
   },
   "projects": {
-    "D:\\I\\SPA\\DAL\\DAL.csproj": {
+    "C:\\PROG\\SPG\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\I\\SPA\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\PROG\\SPG\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "D:\\I\\SPA\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\Antonio Navarro\\.nuget\\packages\\",
-        "outputPath": "D:\\I\\SPA\\DAL\\obj\\",
+        "projectPath": "C:\\PROG\\SPG\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\antnavarro.INFO2\\.nuget\\packages\\",
+        "outputPath": "C:\\PROG\\SPG\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Antonio Navarro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\antnavarro.INFO2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,24 +44,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "MediaToolkit": {
-              "target": "Package",
-              "version": "[1.1.0.1, )"
-            },
-            "VideoLibrary": {
-              "target": "Package",
-              "version": "[3.2.3, )"
-            },
-            "YoutubeExplode": {
-              "target": "Package",
-              "version": "[6.3.12, )"
-            },
-            "YoutubeExplode.Converter": {
-              "target": "Package",
-              "version": "[6.3.12, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -73,29 +55,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\I\\SPA\\SpotifyGoldServer\\SpotifyGoldServer.csproj": {
+    "C:\\PROG\\SPG\\SpotifyGoldServer\\SpotifyGoldServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\I\\SPA\\SpotifyGoldServer\\SpotifyGoldServer.csproj",
+        "projectUniqueName": "C:\\PROG\\SPG\\SpotifyGoldServer\\SpotifyGoldServer.csproj",
         "projectName": "SpotifyGoldServer",
-        "projectPath": "D:\\I\\SPA\\SpotifyGoldServer\\SpotifyGoldServer.csproj",
-        "packagesPath": "C:\\Users\\Antonio Navarro\\.nuget\\packages\\",
-        "outputPath": "D:\\I\\SPA\\SpotifyGoldServer\\obj\\",
+        "projectPath": "C:\\PROG\\SPG\\SpotifyGoldServer\\SpotifyGoldServer.csproj",
+        "packagesPath": "C:\\Users\\antnavarro.INFO2\\.nuget\\packages\\",
+        "outputPath": "C:\\PROG\\SPG\\SpotifyGoldServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Antonio Navarro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\antnavarro.INFO2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -111,8 +88,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\I\\SPA\\DAL\\DAL.csproj": {
-                "projectPath": "D:\\I\\SPA\\DAL\\DAL.csproj"
+              "C:\\PROG\\SPG\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\PROG\\SPG\\DAL\\DAL.csproj"
               }
             }
           }
@@ -137,15 +114,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
