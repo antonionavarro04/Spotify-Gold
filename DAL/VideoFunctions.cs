@@ -1,15 +1,22 @@
-﻿using YoutubeExplode;
-using YoutubeExplode.Converter;
+﻿using Xabe.FFmpeg;
+using YoutubeExplode;
+using YoutubeExplode.Videos;
 
 namespace DAL {
     public static class VideoFunctions {
-        /// <summary>
-        /// Fucntion that creates a directory in the server
-        /// </summary>
-        /// <param name="serverRoot">Root folder of the server</param>
-        /// <param name="id">Name of the folder</param>
-        /// <returns>The string path of the created folder, null if it cannot be created or exists</returns>
-        private static string? CreateDirectory(string serverRoot, string id) {
+		private static readonly string FFmpegPath = @"C:\path\to\ffmpeg\directory";
+
+		static VideoFunctions() {
+			//Console.WriteLine()
+		}
+
+		/// <summary>
+		/// Fucntion that creates a directory in the server
+		/// </summary>
+		/// <param name="serverRoot">Root folder of the server</param>
+		/// <param name="id">Name of the folder</param>
+		/// <returns>The string path of the created folder, null if it cannot be created or exists</returns>
+		private static string? CreateDirectory(string serverRoot, string id) {
             string? directoryPath = Path.Combine(serverRoot, id);
             
             Console.WriteLine($"Creating folder '{id}' at '{directoryPath}'");
@@ -29,46 +36,48 @@ namespace DAL {
             return directoryPath;
         }
 
-        /// <summary>
-        /// Function that downloads a video from YouTube as mp3
-        /// </summary>
-        /// <param name="serverRoot"></param>
-        /// <param name="id"></param>
-        /// <returns>The music.mp3 file</returns>
-        public static async Task<string?> DownloadVideo(string serverRoot, string id) {
-            string? directoryPath = CreateDirectory(serverRoot, id);
+		/// <summary>
+		/// Function that downloads a video from YouTube as mp3
+		/// </summary>
+		/// <param name="serverRoot"></param>
+		/// <param name="id"></param>
+		/// <returns>The string path of the file</returns>
+		public static async Task<string?> DownloadAudio(string serverRoot, string id) {
+			string? directoryPath = CreateDirectory(serverRoot, id);
 
-            if (directoryPath != null) {
-                var youtube = new YoutubeClient();
-                var video = await youtube.Videos.GetAsync(id);
+			if (directoryPath != null) {
+				YoutubeClient youtube = new YoutubeClient();
+				Video video = await youtube.Videos.GetAsync(id);
 
-                // Sanitize the video title to remove invalid characters from the file name
-                string sanitizedTitle = string.Join("_", video.Title.Split(Path.GetInvalidFileNameChars()));
+				// Sanitize the video title to remove invalid characters from the file name
+				string sanitizedTitle = string.Join("_", video.Title.Split(Path.GetInvalidFileNameChars()));
 
-                // Get all available muxed streams
-                var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
-                var muxedStreams = streamManifest.GetMuxedStreams().OrderByDescending(s => s.VideoQuality).ToList();
+				// Get all available audio-only streams
+				var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
+				var audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
 
-                if (muxedStreams.Count != 0) {
-                    var streamInfo = muxedStreams.First();
-                    using var httpClient = new HttpClient();
-                    Console.WriteLine("BitRate: " + streamInfo.Bitrate);
-                    Console.WriteLine("AudioCodec: " + streamInfo.AudioCodec);
-                    var stream = await httpClient.GetStreamAsync(streamInfo.Url);
-                    var datetime = DateTime.Now;
+				if (audioStreams.Count != 0) {
+					var audioStreamInfo = audioStreams.First(); // You may want to choose a specific audio stream here based on your criteria
 
-                    directoryPath = Path.Combine(directoryPath, $"{sanitizedTitle}.{streamInfo.Container}");
-                    using var outputStream = File.Create(directoryPath);
-                    await stream.CopyToAsync(outputStream);
+					using var httpClient = new HttpClient();
+					Console.WriteLine("BitRate: " + audioStreamInfo.Bitrate);
+					Console.WriteLine("AudioCodec: " + audioStreamInfo.AudioCodec);
+					var stream = await httpClient.GetStreamAsync(audioStreamInfo.Url);
 
-                    Console.WriteLine("Download completed!");
-                    Console.WriteLine($"Video saved as: {directoryPath} at {datetime}");
-                } else {
-                    Console.WriteLine($"No suitable video stream found for {video.Title}.");
-                }
-            }
+					var datetime = DateTime.Now;
 
-            return directoryPath;
-        }
-    }
+					directoryPath = Path.Combine(directoryPath, $"{sanitizedTitle}.mp3");
+					using var outputStream = File.Create(directoryPath);
+					await stream.CopyToAsync(outputStream);
+
+					Console.WriteLine("Download completed!");
+					Console.WriteLine($"Audio saved as: {directoryPath} at {datetime}");
+				} else {
+					Console.WriteLine($"No suitable audio stream found for {video.Title}.");
+				}
+			}
+
+			return directoryPath;
+		}
+	}
 }
