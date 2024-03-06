@@ -1,14 +1,11 @@
-﻿using Xabe.FFmpeg;
+﻿using System.ComponentModel;
+using Xabe.FFmpeg;
 using YoutubeExplode;
 using YoutubeExplode.Videos;
+using YoutubeExplode.Videos.Streams;
 
 namespace DAL {
     public static class VideoFunctions {
-		private static readonly string FFmpegPath = @"C:\path\to\ffmpeg\directory";
-
-		static VideoFunctions() {
-			//Console.WriteLine()
-		}
 
 		/// <summary>
 		/// Fucntion that creates a directory in the server
@@ -36,6 +33,14 @@ namespace DAL {
             return directoryPath;
         }
 
+		public static void DeleteDirectory(string directoryPath) {
+			try {
+				Directory.Delete(directoryPath, true);
+			} catch (Exception ex) {
+				Console.WriteLine($"Error deleting folder: {ex.Message}");
+			}
+		}	
+
 		/// <summary>
 		/// Function that downloads a video from YouTube as mp3
 		/// </summary>
@@ -53,28 +58,33 @@ namespace DAL {
 				string sanitizedTitle = string.Join("_", video.Title.Split(Path.GetInvalidFileNameChars()));
 
 				// Get all available audio-only streams
-				var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
-				var audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
+				StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
+				List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
 
 				if (audioStreams.Count != 0) {
-					var audioStreamInfo = audioStreams.First(); // You may want to choose a specific audio stream here based on your criteria
+					AudioOnlyStreamInfo audioStreamInfo = audioStreams.First(); // You may want to choose a specific audio stream here based on your criteria
 
-					using var httpClient = new HttpClient();
+					using HttpClient httpClient = new HttpClient();
+
 					Console.WriteLine("BitRate: " + audioStreamInfo.Bitrate);
 					Console.WriteLine("AudioCodec: " + audioStreamInfo.AudioCodec);
-					var stream = await httpClient.GetStreamAsync(audioStreamInfo.Url);
 
-					var datetime = DateTime.Now;
+					Stream stream = await httpClient.GetStreamAsync(audioStreamInfo.Url);
 
 					directoryPath = Path.Combine(directoryPath, $"{sanitizedTitle}.mp3");
-					using var outputStream = File.Create(directoryPath);
+					using FileStream outputStream = File.Create(directoryPath);
 					await stream.CopyToAsync(outputStream);
 
 					Console.WriteLine("Download completed!");
-					Console.WriteLine($"Audio saved as: {directoryPath} at {datetime}");
+					Console.WriteLine($"Audio saved as: {directoryPath} at {DateTime.Now}");
 				} else {
 					Console.WriteLine($"No suitable audio stream found for {video.Title}.");
 				}
+			} else { // Directory already exists
+				directoryPath = Path.Combine(serverRoot, id);
+
+				// Add to the path the only file that should be there
+				directoryPath = Directory.GetFiles(directoryPath).First();
 			}
 
 			return directoryPath;
