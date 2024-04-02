@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using ENT;
 using YoutubeExplode;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
@@ -12,6 +12,7 @@ namespace DAL {
         /// <param name="serverRoot">Root folder of the server</param>
         /// <param name="id">Name of the folder</param>
         /// <returns>The string path of the created folder, null if it cannot be created or exists</returns>
+        [Obsolete("This method is obsolete and will no longer be used", true)]
         private static string? CreateDirectory(string serverRoot, string id) {
             string? directoryPath = Path.Combine(serverRoot, id);
 
@@ -32,6 +33,7 @@ namespace DAL {
             return directoryPath;
         }
 
+        [Obsolete("This method is obsolete and will no longer be used", true)]
         public static void DeleteDirectory(string directoryPath, int wait) {
             try {
                 Thread.Sleep(wait);
@@ -44,29 +46,22 @@ namespace DAL {
         /// <summary>
         /// Function that downloads a video from YouTube as mp3
         /// </summary>
-        /// <param name="serverRoot"></param>
-        /// <param name="id"></param>
+        /// <param name="id">Id of the YouTube Video</param>
         /// <returns>The string path of the file</returns>
-        public static async Task<Stream?> DownloadAudio(string serverRoot, string id) {
+        public static async Task<ClsAudio> DownloadAudio(string id) {
             YoutubeClient youtube = new YoutubeClient();
             Video video = await youtube.Videos.GetAsync(id);
-            Stream? audio = null;
-
-            // Sanitize the video title to remove invalid characters from the file name
-            string sanitizedTitle = string.Join("_", video.Title.Split(Path.GetInvalidFileNameChars()));
+            ClsAudio audio = new();
 
             // Get all available audio-only streams
             StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
             List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
 
-            foreach (AudioOnlyStreamInfo audioStream in audioStreams) {
-                Console.WriteLine($"Audio Stream: {audioStream.Bitrate}bps, {audioStream.Container.Name}, Size: {audioStream.Size}");
-            }
-
             if (audioStreams.Count != 0) {
-                AudioOnlyStreamInfo audioStreamInfo = audioStreams.First(); // You may want to choose a specific audio stream here based on your criteria
+                AudioOnlyStreamInfo audioStreamInfo = audioStreams.First();
 
-                audio = await youtube.Videos.Streams.GetAsync(audioStreamInfo);
+                audio.Name = $"{Commons.Watermark} {video.Title}.mp3";
+                audio.Stream = await youtube.Videos.Streams.GetAsync(audioStreamInfo);
             }
 
             return audio;

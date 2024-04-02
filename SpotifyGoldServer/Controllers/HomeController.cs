@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SpotifyGoldServer.Controllers.API;
 using SpotifyGoldServer.Models;
 using System.Diagnostics;
 

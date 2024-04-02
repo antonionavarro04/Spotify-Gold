@@ -9,23 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Music\**" />
     <Compile Remove="Requests\**" />
+    <Content Remove="Music\**" />
     <Content Remove="Requests\**" />
+    <EmbeddedResource Remove="Music\**" />
     <EmbeddedResource Remove="Requests\**" />
+    <None Remove="Music\**" />
     <None Remove="Requests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\ENT\ENT.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Music\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,8 +7,14 @@ namespace SpotifyGoldServer.Controllers.API {
     [Route("api/[controller]")]
     [ApiController]
     public class IdController(IWebHostEnvironment env) : ControllerBase {
+
+        [Obsolete("This field is obsolete and will no longer be used", true)]
         private readonly string serverRoot = env.ContentRootPath;
+
+        [Obsolete("This field is obsolete and will no longer be used", true)]
         private readonly string musicRoot = Path.Combine(env.ContentRootPath, "music");
+
+        [Obsolete("This field is obsolete and will no longer be used", true)]
         private readonly string logPath = Path.Combine(env.ContentRootPath, "log", "log.txt");
 
         /// <summary>
@@ -20,10 +26,10 @@ namespace SpotifyGoldServer.Controllers.API {
         public async Task<IActionResult> Get(string id) {
             IActionResult result = BadRequest("Error getting the audio");
 
-            Stream? audioStream = await MusicFunctions.DownloadAudio(musicRoot, id);
+            ClsAudio audio = await MusicFunctions.DownloadAudio(id);
 
-            if (audioStream != null) {
-                result = File(audioStream, "audio/mpeg", $"{id}.mp3");
+            if (audio.Stream != null) {
+                result = File(audio.Stream, "audio/mpeg", audio.Name);
             }
 
             return result;

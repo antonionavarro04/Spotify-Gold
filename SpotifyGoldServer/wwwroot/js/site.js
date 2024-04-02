@@ -1,4 +1,23 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function download() {
+    inpElement = document.querySelector('input[type="text"]');
 
-// Write your JavaScript code.
+    const url = "https://spotifygold.azurewebsites.net/api/id/";
+    let id;
+
+    if (inpElement.value === "") {
+        alert("Please enter a valid URL");
+        return;
+    } else if (inpElement.value.includes("youtu.be")) {
+        id = inpElement.value.split("/")[3];
+        id = id.split("?")[0];
+    } else if (inpElement.value.includes("youtube.com")) {
+        id = inpElement.value.split("v=")[1];
+        id = id.split("&")[0];
+    } else {
+        alert("Please enter a valid URL");
+        return;
+    }
+
+    // Redirect the client to the url + id
+    window.location.href = url + id;
+}
