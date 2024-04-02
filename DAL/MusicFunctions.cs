@@ -5,7 +5,7 @@ using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace DAL {
-    public static class VideoFunctions {
+    public static class MusicFunctions {
 
 		/// <summary>
 		/// Fucntion that creates a directory in the server
@@ -33,8 +33,9 @@ namespace DAL {
             return directoryPath;
         }
 
-		public static void DeleteDirectory(string directoryPath) {
+		public static void DeleteDirectory(string directoryPath, int wait) {
 			try {
+				Thread.Sleep(wait);
 				Directory.Delete(directoryPath, true);
 			} catch (Exception ex) {
 				Console.WriteLine($"Error deleting folder: {ex.Message}");
