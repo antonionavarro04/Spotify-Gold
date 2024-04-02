@@ -30,6 +30,15 @@ namespace SpotifyGoldServer.Controllers.API {
 
             if (audio.Stream != null) {
                 result = File(audio.Stream, "audio/mpeg", audio.Name);
+
+                Console.WriteLine($"Sent audio '{audio.Name}'");
+
+                string ip = $"{HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}";
+                string message = $"Sent audio '{audio.Name}'";
+                ClsLog log = new(ip, message);
+
+                LogHandler.WriteToDDBB(log);
+                Console.WriteLine(log);
             }
 
             return result;
