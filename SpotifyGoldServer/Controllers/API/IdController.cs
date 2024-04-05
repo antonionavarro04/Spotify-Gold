@@ -23,10 +23,10 @@ namespace SpotifyGoldServer.Controllers.API {
         /// <param name="id">Id of the Video</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id) {
+        public async Task<IActionResult> Get(string id, [FromQuery(Name = "q")] int quality) {
             IActionResult result = BadRequest("Error getting the audio");
 
-            ClsAudio audio = await MusicFunctions.DownloadAudio(id);
+            ClsAudio audio = await MusicFunctions.DownloadAudio(id, quality);
 
             if (audio.Stream != null) {
                 result = File(audio.Stream, "audio/mpeg", audio.Name);
