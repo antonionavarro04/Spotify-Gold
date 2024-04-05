@@ -8,13 +8,13 @@ namespace SpotifyGoldServer.Controllers.API {
     [ApiController]
     public class IdController(IWebHostEnvironment env) : ControllerBase {
 
-        [Obsolete("This field is obsolete and will no longer be used", true)]
+        [Obsolete("This field is obsolete and will no longer be used")]
         private readonly string serverRoot = env.ContentRootPath;
 
-        [Obsolete("This field is obsolete and will no longer be used", true)]
+        [Obsolete("This field is obsolete and will no longer be used, replaced not to sending the file")]
         private readonly string musicRoot = Path.Combine(env.ContentRootPath, "music");
 
-        [Obsolete("This field is obsolete and will no longer be used", true)]
+        [Obsolete("This field is obsolete and will no longer be used, replaced by ddbb log")]
         private readonly string logPath = Path.Combine(env.ContentRootPath, "log", "log.txt");
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace DAL {
     public static class MusicFunctions {
 
         /// <summary>
-        /// Fucntion that creates a directory in the server
+        /// Function that creates a directory in the server
         /// </summary>
         /// <param name="serverRoot">Root folder of the server</param>
         /// <param name="id">Name of the folder</param>
@@ -56,7 +56,7 @@ namespace DAL {
         /// <param name="availableSongs">Available songs for download</param>
         /// <param name="quality">Quality to download (0 = Best, 1 = Normal, 2 = Lowest)</param>
         /// <returns>Index of the song to be downloaded</returns>
-        private static int getQualityIndex(int availableSongs, int quality) {
+        private static int GetQualityIndex(int availableSongs, int quality) {
             int index = 0;
 
             switch (quality) {
@@ -89,7 +89,7 @@ namespace DAL {
             StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
             List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
             int i = 0;
-            
+
             Console.WriteLine($"Quality: {quality}");
             foreach (AudioOnlyStreamInfo info in audioStreams) {
                 Console.WriteLine($"{i}: {info.Size}");
@@ -97,7 +97,7 @@ namespace DAL {
             }
 
             if (audioStreams.Count != 0) {
-                int index = getQualityIndex(audioStreams.Count, quality);
+                int index = GetQualityIndex(audioStreams.Count, quality);
 
                 AudioOnlyStreamInfo audioStreamInfo = audioStreams[index];
 
