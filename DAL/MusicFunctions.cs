@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom;
 using ENT;
 using YoutubeExplode;
+using YoutubeExplode.Search;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
@@ -85,6 +86,8 @@ namespace DAL {
             Video video = await youtube.Videos.GetAsync(id);
             ClsAudio audio = new();
 
+            audio.Json = await MetadataHandler.GetDataJson(video);
+
             // Get all available audio-only streams
             StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
             List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
@@ -106,6 +109,15 @@ namespace DAL {
             }
 
             return audio;
+        }
+
+        public static void GetVideos(string query) {
+            YoutubeClient youtube = new YoutubeClient();
+            IAsyncEnumerable<ISearchResult> result = youtube.Search.GetResultsAsync(query);
+
+            foreach (ISearchResult searchResult in result) {
+                Console.WriteLine(searchResult.ToString);
+            }
         }
 
     }

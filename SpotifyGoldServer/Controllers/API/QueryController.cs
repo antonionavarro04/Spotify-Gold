@@ -10,7 +10,7 @@ namespace SpotifyGoldServer.Controllers.API {
         public async Task<IActionResult> Get(string query) {
             IActionResult result = StatusCode(403);
 
-            ///
+            
 
             return result;
         }

@@ -38,7 +38,9 @@ namespace SpotifyGoldServer.Controllers.API {
                 ClsLog log = new(ip, message);
 
                 LogHandler.WriteToDDBB(log);
-                Console.WriteLine(log);
+            }
+            if (audio.Json != null) {
+                Response.Headers.Add("Metadata", audio.Json);
             }
 
             return result;
