@@ -12,7 +12,7 @@ namespace DAL {
         /// <returns></returns>
         public static int WriteToDDBB(ClsLog message) {
             int affectedRows = 0;
-            SqlConnection conn = ClsConnection.getConnection(false);
+            SqlConnection conn = ClsConnection.GetConnection();
             SqlCommand query = new SqlCommand();
 
             try {

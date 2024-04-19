@@ -7,17 +7,24 @@ using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Videos;
 using Newtonsoft.Json;
+using AngleSharp.Text;
+using ENT;
 
 namespace DAL {
     internal static class MetadataHandler {
 
-        internal static async Task<string> GetDataJson(Video video) {
-            // Add the non latin characters to the json
-            JsonSerializerSettings settings = new() {
-                StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
-            };
+        private static JsonSerializerSettings settings = new() {
+            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
+        };
 
-            return JsonConvert.SerializeObject(video, Formatting.None, settings);
+        public static string GetDataJson(Video video) {
+			return JsonConvert.SerializeObject(video, Formatting.None, settings);
         }
+
+        public static string ClsToDto(string json) {
+            DtoMetadata dto = (DtoMetadata) JsonConvert.DeserializeObject(json);
+
+            return JsonConvert.SerializeObject(dto, Formatting.None, settings);
+		}
     }
 }
