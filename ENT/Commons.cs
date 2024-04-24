@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ENT {
     public static class Commons {
-        public static string Vendor { get; } = "Spotify Gold";
+        public static string Vendor { get; } = "SPG";
 
         public static string Version { get; } = "1.0.0";
 

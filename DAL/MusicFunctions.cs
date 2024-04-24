@@ -1,124 +1,110 @@
 ﻿using AngleSharp.Dom;
 using ENT;
+using Newtonsoft.Json;
 using YoutubeExplode;
+using YoutubeExplode.Common;
 using YoutubeExplode.Search;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace DAL {
-	public static class MusicFunctions {
+    public static class MusicFunctions {
 
-		/// <summary>
-		/// Function that creates a directory in the server
-		/// </summary>
-		/// <param name="serverRoot">Root folder of the server</param>
-		/// <param name="id">Name of the folder</param>
-		/// <returns>The string path of the created folder, null if it cannot be created or exists</returns>
-		[Obsolete("This method is obsolete and will no longer be used", true)]
-		private static string? CreateDirectory(string serverRoot, string id) {
-			string? directoryPath = Path.Combine(serverRoot, id);
+        /// <summary>
+        /// Function that returns the index of the song based on the available strams and the quality
+        /// Example: If there are 4 songs and quality is 0 index will be 0 (max quality)
+        /// In the other hand if there are 5 songs and quality is 1 index will be 2 (medium quality)
+        /// Last one if quality is 2 it'll return the last index (bad quality)
+        /// 
+        /// This is done so the user can decide whether download songs in good quality with a cost of
+        /// storage or in bad quality occupying less storage
+        /// </summary>
+        /// <param name="availableSongs">Available songs for download</param>
+        /// <param name="quality">Quality to download (0 = Best, 1 = Normal, 2 = Lowest)</param>
+        /// <returns>Index of the song to be downloaded</returns>
+        private static int GetQualityIndex(int availableSongs, int quality) {
+            int index = 0;
 
-			Console.WriteLine($"Creating folder '{id}' at '{directoryPath}'");
+            switch (quality) {
+                case 1:
+                index = (availableSongs - 1) / 2;
+                break;
 
-			try {
-				// Check if the directory doesn't exist, then create it
-				if (!Directory.Exists(directoryPath)) {
-					Directory.CreateDirectory(directoryPath);
-				} else {
-					directoryPath = null;
-				}
-			} catch (Exception ex) {
-				Console.WriteLine($"Error creating folder: {ex.Message}");
-				directoryPath = null;
-			}
+                case 2:
+                index = availableSongs - 1;
+                break;
 
-			return directoryPath;
-		}
+                default:
+                break;
+            }
 
-		[Obsolete("This method is obsolete and will no longer be used", true)]
-		public static void DeleteDirectory(string directoryPath, int wait) {
-			try {
-				Thread.Sleep(wait);
-				Directory.Delete(directoryPath, true);
-			} catch (Exception ex) {
-				Console.WriteLine($"Error deleting folder: {ex.Message}");
-			}
-		}
+            return index;
+        }
 
-		/// <summary>
-		/// Function that returns the index of the song based on the available strams and the quality
-		/// Example: If there are 4 songs and quality is 0 index will be 0 (max quality)
-		/// In the other hand if there are 5 songs and quality is 1 index will be 2 (medium quality)
-		/// Last one if quality is 2 it'll return the last index (bad quality)
-		/// 
-		/// This is done so the user can decide whether download songs in good quality with a cost of
-		/// storage or in bad quality occupying less storage
-		/// </summary>
-		/// <param name="availableSongs">Available songs for download</param>
-		/// <param name="quality">Quality to download (0 = Best, 1 = Normal, 2 = Lowest)</param>
-		/// <returns>Index of the song to be downloaded</returns>
-		private static int GetQualityIndex(int availableSongs, int quality) {
-			int index = 0;
+        /// <summary>
+        /// Function that downloads a video from YouTube as mp3
+        /// </summary>
+        /// <param name="id">Id of the YouTube Video</param>
+        /// <returns>The string path of the file</returns>
+        public static async Task<ClsAudio> DownloadAudio(string id, int quality) {
+            YoutubeClient youtube = new YoutubeClient();
+            Video video = await youtube.Videos.GetAsync(id);
+            ClsAudio audio = new();
 
-			switch (quality) {
-				case 1:
-				index = (availableSongs - 1) / 2;
-				break;
+            audio.Json = MetadataHandler.GetDataJson(video);
 
-				case 2:
-				index = availableSongs - 1;
-				break;
+            // Get all available audio-only streams
+            StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
+            List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
+            int i = 0;
 
-				default:
-				break;
-			}
+            Console.WriteLine($"Quality: {quality}");
+            foreach (AudioOnlyStreamInfo info in audioStreams) {
+                Console.WriteLine($"{i}: {info.Size}");
+                i++;
+            }
 
-			return index;
-		}
+            if (audioStreams.Count != 0) {
+                int index = GetQualityIndex(audioStreams.Count, quality);
 
-		/// <summary>
-		/// Function that downloads a video from YouTube as mp3
-		/// </summary>
-		/// <param name="id">Id of the YouTube Video</param>
-		/// <returns>The string path of the file</returns>
-		public static async Task<ClsAudio> DownloadAudio(string id, int quality) {
-			YoutubeClient youtube = new YoutubeClient();
-			Video video = await youtube.Videos.GetAsync(id);
-			ClsAudio audio = new();
+                AudioOnlyStreamInfo audioStreamInfo = audioStreams[index];
 
-			audio.Json = MetadataHandler.GetDataJson(video);
+                audio.Name = $"{Commons.Watermark} {video.Title}.mp3";
+                audio.Stream = await youtube.Videos.Streams.GetAsync(audioStreamInfo);
+            }
 
-			// Get all available audio-only streams
-			StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
-			List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
-			int i = 0;
+            return audio;
+        }
 
-			Console.WriteLine($"Quality: {quality}");
-			foreach (AudioOnlyStreamInfo info in audioStreams) {
-				Console.WriteLine($"{i}: {info.Size}");
-				i++;
-			}
+        public static async Task<string?> GetInfo(string id) {
+            string? json;
+            YoutubeClient youtube = new YoutubeClient();
+            Video video;
 
-			if (audioStreams.Count != 0) {
-				int index = GetQualityIndex(audioStreams.Count, quality);
+            try {
+                video = await youtube.Videos.GetAsync(id);
+                json = MetadataHandler.GetDataJson(video, false);
+            } catch (Exception) {
+                json = null;
+            }
 
-				AudioOnlyStreamInfo audioStreamInfo = audioStreams[index];
+            return json;
+        }
 
-				audio.Name = $"{Commons.Watermark} {video.Title}.mp3";
-				audio.Stream = await youtube.Videos.Streams.GetAsync(audioStreamInfo);
-			}
+        public static async Task<string?> Search(string query) {
+            YoutubeClient youtube = new YoutubeClient();
+            IReadOnlyList<VideoSearchResult> youtubeResults = await youtube.Search.GetVideosAsync(query);
+            List<VideoSearchResult> results = new();
 
-			return audio;
-		}
+            foreach (var result in youtubeResults) {
+                results.Add(result);
+                break;
+            }
+            if (results.Count == 0) {
+                return null;
+            }
 
-		public static async void GetVideos(string query) {
-			YoutubeClient youtube = new YoutubeClient();
-			IAsyncEnumerable<ISearchResult> result = youtube.Search.GetResultsAsync(query);
-
-			await foreach (ISearchResult searchResult in result) {
-				Console.WriteLine(searchResult.ToString);
-			}
-		}
-
-	}
+            return JsonConvert.SerializeObject(results, Formatting.Indented);
+        }
+    }
 }
