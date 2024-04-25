@@ -12,12 +12,10 @@ namespace DAL {
         /// <returns></returns>
         public static int WriteToDDBB(ClsLog message) {
             int affectedRows = 0;
-            SqlConnection conn = ClsConnection.GetConnection();
+            SqlConnection conn = ClsConnection.GetConnection(true);
             SqlCommand query = new SqlCommand();
 
             try {
-                conn.Open();
-
                 query.Connection = conn;
                 query.CommandText = "INSERT INTO Log (Date, Receiver, Message) VALUES (@Date, @Receiver, @Message)";
                 query.Parameters.AddWithValue("@Date", message.Date);

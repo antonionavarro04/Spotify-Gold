@@ -5,8 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using ENT.Dto;
 
-namespace SpotifyGoldServer.Controllers.API
-{
+namespace SpotifyGoldServer.Controllers.API {
 
     [Route("api/yt")]
     [ApiController]
@@ -32,14 +31,7 @@ namespace SpotifyGoldServer.Controllers.API
 
             if (audio.Stream != null) {
                 result = File(audio.Stream, "audio/mpeg", audio.Name);
-
-                Console.WriteLine($"Sent audio '{audio.Name}'");
-
-                string ip = $"{HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}";
-                string message = $"Sent audio '{audio.Name}'";
-                ClsLog log = new(ip, message);
-
-                LogHandler.WriteToDDBB(log);
+                LogHandler.WriteToDDBB(new ClsLog(getIpPlusPort(), $"Downloaded '{id}'"));
             }
             if (audio.Json != null && appendMetadata) {
                 Response.Headers.Add("Metadata", audio.Json);
@@ -62,6 +54,7 @@ namespace SpotifyGoldServer.Controllers.API
             string? json = await MusicFunctions.GetInfo(id);
             if (json != null) {
                 result = Ok(json);
+                LogHandler.WriteToDDBB(new ClsLog(getIpPlusPort(), $"Get info of '{id}'"));
             }
 
             return result;
@@ -71,6 +64,7 @@ namespace SpotifyGoldServer.Controllers.API
         /// Function that searches for a list of videos in YouTube
         /// </summary>
         /// <param name="query">Query to search</param>
+        /// <param name="maxResults">Max number of results</param>
         /// <returns></returns>
         [HttpGet("search")]
         public async Task<IActionResult> Search(
@@ -82,9 +76,14 @@ namespace SpotifyGoldServer.Controllers.API
             string? json = await MusicFunctions.Search(query, maxResults);
             if (json != null) {
                 result = Ok(json);
+                LogHandler.WriteToDDBB(new ClsLog(getIpPlusPort(), $"Search for '{query}' with {maxResults} results"));
             }
 
             return result;
+        }
+
+        private string getIpPlusPort() {
+            return $"{HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}";
         }
     }
 }
