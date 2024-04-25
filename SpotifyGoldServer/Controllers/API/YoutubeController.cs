@@ -73,10 +73,13 @@ namespace SpotifyGoldServer.Controllers.API
         /// <param name="query">Query to search</param>
         /// <returns></returns>
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string query) {
+        public async Task<IActionResult> Search(
+            [FromQuery] string query,
+            [FromQuery] int maxResults = 10
+        ) {
             IActionResult result = NotFound("No videos found");
 
-            string? json = await MusicFunctions.Search(query);
+            string? json = await MusicFunctions.Search(query, maxResults);
             if (json != null) {
                 result = Ok(json);
             }

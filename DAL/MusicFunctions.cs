@@ -91,17 +91,19 @@ namespace DAL {
             return json;
         }
 
-        public static async Task<string?> Search(string query) {
+        public static async Task<string?> Search(string query, int maxResults) {
             YoutubeClient youtube = new YoutubeClient();
-            IReadOnlyList<VideoSearchResult> youtubeResults = await youtube.Search.GetVideosAsync(query);
-            List<VideoSearchResult> results = new();
+            List<VideoSearchResult>? results = new();
 
-            foreach (var result in youtubeResults) {
+            await foreach (VideoSearchResult result in youtube.Search.GetVideosAsync(query)) {
                 results.Add(result);
-                break;
+
+                if (results.Count == maxResults) {
+                    break;
+                }
             }
             if (results.Count == 0) {
-                return null;
+                results = null;
             }
 
             return JsonConvert.SerializeObject(results, Formatting.Indented);
