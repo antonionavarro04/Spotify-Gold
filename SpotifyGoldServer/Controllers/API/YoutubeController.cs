@@ -31,7 +31,7 @@ namespace SpotifyGoldServer.Controllers.API {
 
             if (audio.Stream != null) {
                 result = File(audio.Stream, "audio/mpeg", audio.Name);
-                LogHandler.WriteToDDBB(new ClsLog(getIpPlusPort(), $"Downloaded '{id}'"));
+                LogHandler.WriteToDDBB(new ClsLog(GetIpPlusPort(), $"Downloaded '{id}'"));
             }
             if (audio.Json != null && appendMetadata) {
                 Response.Headers.Add("Metadata", audio.Json);
@@ -54,7 +54,7 @@ namespace SpotifyGoldServer.Controllers.API {
             string? json = await MusicFunctions.GetInfo(id);
             if (json != null) {
                 result = Ok(json);
-                LogHandler.WriteToDDBB(new ClsLog(getIpPlusPort(), $"Get info of '{id}'"));
+                LogHandler.WriteToDDBB(new ClsLog(GetIpPlusPort(), $"Get info of '{id}'"));
             }
 
             return result;
@@ -76,13 +76,13 @@ namespace SpotifyGoldServer.Controllers.API {
             string? json = await MusicFunctions.Search(query, maxResults);
             if (json != null) {
                 result = Ok(json);
-                LogHandler.WriteToDDBB(new ClsLog(getIpPlusPort(), $"Search for '{query}' with {maxResults} results"));
+                LogHandler.WriteToDDBB(new ClsLog(GetIpPlusPort(), $"Search for '{query}' with {maxResults} results"));
             }
 
             return result;
         }
 
-        private string getIpPlusPort() {
+        private string GetIpPlusPort() {
             return $"{HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}";
         }
     }

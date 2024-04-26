@@ -56,13 +56,6 @@ namespace DAL {
             // Get all available audio-only streams
             StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
             List<AudioOnlyStreamInfo> audioStreams = streamManifest.GetAudioOnlyStreams().OrderByDescending(s => s.Bitrate).ToList();
-            int i = 0;
-
-            Console.WriteLine($"Quality: {quality}");
-            foreach (AudioOnlyStreamInfo info in audioStreams) {
-                Console.WriteLine($"{i}: {info.Size}");
-                i++;
-            }
 
             if (audioStreams.Count != 0) {
                 int index = GetQualityIndex(audioStreams.Count, quality);
@@ -76,6 +69,11 @@ namespace DAL {
             return audio;
         }
 
+        /// <summary>
+        /// Method that retrives all the Metadata of a Video
+        /// </summary>
+        /// <param name="id">Id of the Video</param>
+        /// <returns>Stringified JSON containing Metadata</returns>
         public static async Task<string?> GetInfo(string id) {
             string? json;
             YoutubeClient youtube = new YoutubeClient();
@@ -91,6 +89,12 @@ namespace DAL {
             return json;
         }
 
+        /// <summary>
+        /// Function that in base of a query retrieves a JSON Array of YT Results
+        /// </summary>
+        /// <param name="query">Query to be searched</param>
+        /// <param name="maxResults">Maximum Results to be Fetched</param>
+        /// <returns>Stringified JSON Array of Results</returns>
         public static async Task<string?> Search(string query, int maxResults) {
             YoutubeClient youtube = new YoutubeClient();
             List<VideoSearchResult>? results = new();
