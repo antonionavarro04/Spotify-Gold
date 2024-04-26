@@ -1,7 +1,7 @@
 Terminar API - Implementar Usuarios, Playlist Services
 Empezar implementación de Funcionaliades en Android
 Convertir los Resultados también a los DTO's
-Empezar diseño real de las pantallas de Android (Compose*Material3)
+Empezar diseño real de las pantallas de Android (Compose+Material3)
 
 Documentacion hasta estar empezando el 3.0 - 3.5
 
