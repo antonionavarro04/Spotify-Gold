@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENT", "ENT\ENT.csproj", "{E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "COM", "COM\COM.csproj", "{03FE46D4-E1C0-443B-9D91-4B1E4E651C4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{B2901270-0561-40FD-8735-5B4480819739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{B2901270-0561-40FD-8735-5B4480819739}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

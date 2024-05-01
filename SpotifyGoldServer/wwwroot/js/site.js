@@ -1,10 +1,14 @@
-﻿function download() {
+﻿window.onload = function () {
+
+}
+
+function download() {
     inpElement = document.querySelector('input[type="text"]');
 
-    // const url = "https://spotifygold.azurewebsites.net/api/id/";
-    const url = "http://localhost:5244/api/id/";
-    let quality = document.querySelector("select").value
-    console.log(quality)
+    const url = "https://spotifygold.azurewebsites.net/api/yt/";
+    // const url = "http://localhost:5244/api/id/";
+
+    const quality = document.querySelector("select").value
     let id;
 
     if (inpElement.value === "") {
@@ -22,5 +26,5 @@
     }
 
     // Redirect the client to the url + id
-    window.location.href = `${url}${id}?q=${quality}`;
+    window.location.href = `${url}${id}/download?q=${quality}&appendMetadata=false`;
 }

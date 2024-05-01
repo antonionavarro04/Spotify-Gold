@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom;
+using COM;
 using ENT;
 using Newtonsoft.Json;
 using YoutubeExplode;
@@ -47,11 +48,11 @@ namespace DAL {
         /// <param name="id">Id of the YouTube Video</param>
         /// <returns>The string path of the file</returns>
         public static async Task<ClsAudio> DownloadAudio(string id, int quality) {
-            YoutubeClient youtube = new YoutubeClient();
+            YoutubeClient youtube = new();
             Video video = await youtube.Videos.GetAsync(id);
-            ClsAudio audio = new();
-
-            audio.Json = MetadataHandler.GetDataJson(video);
+            ClsAudio audio = new() {
+                Json = MetadataHandler.GetDataJson(video)
+            };
 
             // Get all available audio-only streams
             StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
@@ -76,7 +77,7 @@ namespace DAL {
         /// <returns>Stringified JSON containing Metadata</returns>
         public static async Task<string?> GetInfo(string id) {
             string? json;
-            YoutubeClient youtube = new YoutubeClient();
+            YoutubeClient youtube = new();
             Video video;
 
             try {
@@ -96,7 +97,7 @@ namespace DAL {
         /// <param name="maxResults">Maximum Results to be Fetched</param>
         /// <returns>Stringified JSON Array of Results</returns>
         public static async Task<string?> Search(string query, int maxResults) {
-            YoutubeClient youtube = new YoutubeClient();
+            YoutubeClient youtube = new();
             List<VideoSearchResult>? results = new();
 
             await foreach (VideoSearchResult result in youtube.Search.GetVideosAsync(query)) {

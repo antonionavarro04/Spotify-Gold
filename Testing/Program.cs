@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using ENT.Dto;
+﻿string currentPath = Path.Combine(Directory.GetCurrentDirectory(), "ui.jpg");
+byte[] image = File.ReadAllBytes(currentPath);
 
-DateTimeOffset dateTimeOffset = new(2021, 1, 1, 0, 0, 0, TimeSpan.Zero);
-
-
+Console.WriteLine(DAL.ImageHandler.SaveImage(image)); // 1, pls

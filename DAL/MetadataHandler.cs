@@ -8,12 +8,13 @@ using YoutubeExplode.Common;
 using YoutubeExplode.Videos;
 using Newtonsoft.Json;
 using AngleSharp.Text;
-using ENT.Dto;
 using Microsoft.IdentityModel.Tokens;
 using AngleSharp.Dom;
 using YoutubeExplode.Search;
+using ENT.Dto.Metadata;
 
-namespace DAL {
+namespace DAL
+{
     internal static class MetadataHandler {
 
         private static JsonSerializerSettings settings = new() {
@@ -21,7 +22,7 @@ namespace DAL {
         };
 
         public static string GetDataJson(Video video, bool escapeAscii = true) {
-            DtoMetadata dto = EntToDto(video);
+            DtoMetadataResponse dto = EntToDto(video);
             string json = escapeAscii ?
                 JsonConvert.SerializeObject(dto, Formatting.None, settings) : JsonConvert.SerializeObject(dto, Formatting.Indented);
 
@@ -35,7 +36,7 @@ namespace DAL {
             return json;
         }
 
-        private static DtoMetadata EntToDto(Video ent) {
+        private static DtoMetadataResponse EntToDto(Video ent) {
             List<string> urlsToSearch = new() {
                 "maxresdefault",
                 "sddefault",
@@ -44,7 +45,7 @@ namespace DAL {
                 "default"
             };
 
-            DtoMetadata dto = new() {
+            DtoMetadataResponse dto = new() {
                 Id = ent.Id.Value,
                 Title = ent.Title,
                 Description = ent.Description,
@@ -60,7 +61,7 @@ namespace DAL {
                 }
             };
 
-            List<DtoThumbnail> thumbnails = new();
+            List<DtoThumbnailResponse> thumbnails = new();
 
             List<Thumbnail> thumbs = ent.Thumbnails.ToList<Thumbnail>();
 
