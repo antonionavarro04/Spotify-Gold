@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h3>Hi, @Model.Name</h3>
+        <p>Thank you for registering into Spotify Gold!</p>
+        <p>Your account is nearly active!!!</p>
+        <p>Here is your activation code: <b>@Model.ActivationCode</b></p>
+        <p>Enter this code in the app to activate your account.</p>
+        <p>Alternatively, you can click on the following button to activate your account:</p>
+        <div>
+            <a href="https://spotifygold.azurewebsites.net/api/user/@Model.Name/activate/@Model.ActivationCode" style="background-color: #d6c356; color: black; padding: 10px; text-decoration: none;">Activate Account</a>
+        </div>
+        <br>
+        <p>Thank you for choosing Spotify Gold!</p>
+        <img width="400px" src="https://spotifygold.azurewebsites.net/banner.jpg">
+    </body>
+</html>

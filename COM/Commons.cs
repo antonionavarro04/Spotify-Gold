@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace COM {
     public static class Commons {
-        public static string Vendor { get; } = "SPG";
+        public const string VENDOR = "SPG";
 
-        public static string Version { get; } = "1.0.0";
+        public const string VERSION = "1.0.0";
 
-        public static string Watermark { get; } = $"[{Vendor}]";
+        public const string WATERMARK = $"[{VENDOR}]";
+
+        public const string EMAIL = "spotifygoldand@gmail.com";
     }
 }

@@ -63,7 +63,7 @@ namespace DAL {
 
                 AudioOnlyStreamInfo audioStreamInfo = audioStreams[index];
 
-                audio.Name = $"{Commons.Watermark} {video.Title}.mp3";
+                audio.Name = $"{Commons.WATERMARK} {video.Title}.mp3";
                 audio.Stream = await youtube.Videos.Streams.GetAsync(audioStreamInfo);
             }
 
