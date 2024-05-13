@@ -4,12 +4,8 @@ using SpotifyGoldServer.Models;
 using System.Diagnostics;
 
 namespace SpotifyGoldServer.Controllers {
-    public class HomeController(ILogger<HomeController> logger): Controller {
-        private readonly ILogger<HomeController> _logger = logger;
-
+    public class HomeController(): Controller {
         public IActionResult Index() {
-            string ip = HttpContext.Connection.RemoteIpAddress!.ToString();
-            ViewBag.IpPlusPort = ip;
             return View();
         }
 

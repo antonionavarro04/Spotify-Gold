@@ -1,12 +1,11 @@
 ﻿window.onload = function () {
-
+    document.title = "Spotify Gold - YouTube to MP3 Coverter";
 }
 
 function download() {
     inpElement = document.querySelector('input[type="text"]');
 
     const url = "https://spotifygold.azurewebsites.net/api/yt/";
-    // const url = "http://localhost:5244/api/id/";
 
     const quality = document.querySelector("select").value
     let id;
@@ -26,5 +25,5 @@ function download() {
     }
 
     // Redirect the client to the url + id
-    window.location.href = `${url}${id}/download?q=${quality}&appendMetadata=false`;
+    window.location.href = `${url}${id}/download?quality=${quality}&appendMetadata=false`;
 }

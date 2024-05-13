@@ -1,7 +1,5 @@
-﻿namespace ENT.Dto.Metadata
-{
-    public class DtoEngagementResponse
-    {
+﻿namespace ENT.Dto.Metadata {
+    public class DtoEngagementResponse {
         #region Fields and Properties
 
         public long Views { get; set; }
@@ -10,8 +8,7 @@
         #endregion
         #region Contructors
 
-        public DtoEngagementResponse()
-        {
+        public DtoEngagementResponse() {
             // Empty Constructor
         }
 

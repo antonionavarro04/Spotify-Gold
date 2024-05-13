@@ -2,17 +2,43 @@
     ViewData["Title"] = "Home Page";
 }
 
+<head>
+    <title>Spotify Gold - Youtube to MP3 Converter</title>
+    <style>
+        .flexColumnGap10 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input {
+padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 400px;
+        }
+    </style>
+</head>
+
 <script defer src="site.js"></script>
 
 <div class="text-center">
     <h1 class="display-4">Spotify Gold API</h1>
-    <h2>Thanks for Your IP: @ViewBag.IpPlusPort !!!</h2>
     <p>Enter the youtube link to download your file</p>
-    <input type="text" id="youtubeLink" />
-    <select>
-        <option value="0">Best</option>
-        <option value="1">Normal</option>
-        <option value="2">Lowest</option>
-    </select>
-    <button onclick="download()">Download</button>
+    <div class="flexColumnGap10">
+        <input type="text" id="youtubeLink" placeholder="Enter Youtube Link..." />
+        <div>
+            <select>
+                <option value="0">Best</option>
+                <option value="1">Normal</option>
+                <option value="2">Lowest</option>
+            </select>
+            <button onclick="download()">Download</button>
+        </div>
+    </div>
+    <br>
+    <section style="margin-top: 20px">
+        <img src="banner.jpg" width="400">
+    </section>
 </div>

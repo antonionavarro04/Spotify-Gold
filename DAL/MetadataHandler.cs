@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using AngleSharp.Dom;
 using YoutubeExplode.Search;
 using ENT.Dto.Metadata;
+using ENT.Dto.Result;
 
 namespace DAL
 {
@@ -89,8 +90,20 @@ namespace DAL
             return dto;
         }
 
-        private static void EntToDto(VideoSearchResult dto) {
+        public static DtoResultResponse EntToDto(VideoSearchResult result) {
+            DtoResultResponse dto = new DtoResultResponse {
+                Id = result.Id,
+                Title = result.Title,
+                AuthorName = result.Author.ChannelTitle
+            };
 
+            // Get the better quality thumbnail
+            List<Thumbnail> thumbs = result.Thumbnails.ToList<Thumbnail>();
+            thumbs.OrderByDescending(t => t.Resolution.Area);
+
+            dto.Thumbnail = thumbs[0].Url;
+
+            return dto;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AngleSharp.Dom;
 using COM;
 using ENT;
+using ENT.Dto.Result;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Search;
@@ -9,7 +11,12 @@ using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace DAL {
+
     public static class MusicFunctions {
+
+        private static JsonSerializerSettings settings = new() {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
 
         /// <summary>
         /// Function that returns the index of the song based on the available strams and the quality
@@ -98,10 +105,10 @@ namespace DAL {
         /// <returns>Stringified JSON Array of Results</returns>
         public static async Task<string?> Search(string query, int maxResults) {
             YoutubeClient youtube = new();
-            List<VideoSearchResult>? results = new();
+            List<DtoResultResponse>? results = new();
 
             await foreach (VideoSearchResult result in youtube.Search.GetVideosAsync(query)) {
-                results.Add(result);
+                results.Add(MetadataHandler.EntToDto(result));
 
                 if (results.Count == maxResults) {
                     break;
@@ -111,7 +118,7 @@ namespace DAL {
                 results = null;
             }
 
-            return JsonConvert.SerializeObject(results, Formatting.Indented);
+            return JsonConvert.SerializeObject(results, Formatting.Indented, settings);
         }
     }
 }
