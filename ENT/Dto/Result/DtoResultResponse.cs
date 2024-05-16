@@ -15,5 +15,15 @@ namespace ENT.Dto.Result {
         public string Thumbnail { get; set; }
 
         #endregion
+        #region Constructors
+
+        public DtoResultResponse() {
+            this.Id = string.Empty;
+            this.Title = string.Empty;
+            this.AuthorName = string.Empty;
+            this.Thumbnail = string.Empty;
+        }
+
+        #endregion
     }
 }
