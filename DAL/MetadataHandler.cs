@@ -101,7 +101,7 @@ namespace DAL
             List<Thumbnail> thumbs = result.Thumbnails.ToList<Thumbnail>();
             thumbs.OrderByDescending(t => t.Resolution.Area);
 
-            dto.Thumbnail = thumbs[0].Url;
+            dto.Thumbnail = thumbs[thumbs.Count - 1].Url;
 
             return dto;
         }
