@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YoutubeExplode;
+﻿using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Videos;
 using Newtonsoft.Json;
-using AngleSharp.Text;
-using Microsoft.IdentityModel.Tokens;
-using AngleSharp.Dom;
 using YoutubeExplode.Search;
 using ENT.Dto.Metadata;
 using ENT.Dto.Result;
+using ENT;
+using System.Net.Http;
 
-namespace DAL
-{
+namespace DAL {
     internal static class MetadataHandler {
 
         private static JsonSerializerSettings settings = new() {
@@ -90,20 +83,48 @@ namespace DAL
             return dto;
         }
 
-        public static DtoResultResponse EntToDto(VideoSearchResult result) {
-            DtoResultResponse dto = new DtoResultResponse {
+        public static async Task<DtoResultResponse> EntToDto(VideoSearchResult result) {
+            ClsEngagement engagement = await GetEngagement(result.Id) ?? new ClsEngagement();
+
+            TimeSpan duration = result.Duration ?? TimeSpan.Zero;
+
+            var thumbs = result.Thumbnails.OrderByDescending(t => t.Resolution.Area).ToList();
+
+            var dto = new DtoResultResponse {
                 Id = result.Id,
                 Title = result.Title,
-                AuthorName = result.Author.ChannelTitle
+                AuthorName = result.Author.ChannelTitle,
+                Duration = (long) duration.TotalSeconds,
+                Thumbnail = thumbs.LastOrDefault()?.Url,
+                Views = engagement.Views,
+                Likes = engagement.Likes
             };
 
-            // Get the better quality thumbnail
-            List<Thumbnail> thumbs = result.Thumbnails.ToList<Thumbnail>();
-            thumbs.OrderByDescending(t => t.Resolution.Area);
-
-            dto.Thumbnail = thumbs[thumbs.Count - 1].Url;
-
             return dto;
+        }
+
+        public static async Task<ClsEngagement?> GetEngagement(string id) {
+            using (var client = new HttpClient()) {
+                string apiUrl = $"https://www.googleapis.com/youtube/v3/videos?part=statistics&id={id}&key={ClsConnection.YOUTUBE_API_KEY}";
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode) {
+                    var responseData = await response.Content.ReadAsAsync<dynamic>();
+                    var statistics = responseData["items"][0]["statistics"];
+
+                    var engagement = new ClsEngagement {
+                        Likes = Convert.ToInt64(statistics["likeCount"]),
+                        Views = Convert.ToInt64(statistics["viewCount"])
+                    };
+
+                    return engagement;
+                } else {
+                    // Handle error
+                    Console.WriteLine($"Failed to retrieve data from Youtube API. Status code: {response.StatusCode}");
+                    return null;
+                }
+            }
         }
     }
 }

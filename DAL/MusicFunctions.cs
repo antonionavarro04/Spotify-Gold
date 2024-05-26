@@ -108,7 +108,7 @@ namespace DAL {
             List<DtoResultResponse>? results = new();
 
             await foreach (VideoSearchResult result in youtube.Search.GetVideosAsync(query)) {
-                results.Add(MetadataHandler.EntToDto(result));
+                results.Add(await MetadataHandler.EntToDto(result));
 
                 if (results.Count == maxResults) {
                     break;

@@ -13,6 +13,9 @@ namespace ENT.Dto.Result {
         public string Title { get; set; }
         public string AuthorName { get; set; }
         public string Thumbnail { get; set; }
+        public long Duration { get; set; }
+        public long Views { get; set; }
+        public long Likes { get; set; }
 
         #endregion
         #region Constructors
