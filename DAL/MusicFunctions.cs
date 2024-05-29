@@ -2,8 +2,11 @@
 using COM;
 using ENT;
 using ENT.Dto.Result;
+using Id3;
+using Id3.Frames;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Diagnostics;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Search;
@@ -76,6 +79,30 @@ namespace DAL {
 
             return audio;
         }
+
+        private static void AddId3Tags(ref Stream audioStream, Video video) {
+            using (var mp3 = new Mp3(audioStream, Mp3Permissions.ReadWrite)) {
+                // Create a new ID3 tag
+                Id3Tag tag = new Id3Tag();
+
+                // Set the ID3 tag properties
+                tag.Genre.Value = video.Id;
+                tag.Title.Value = video.Title;
+                tag.Artists.Value.Add(video.Author.ChannelTitle);
+                tag.Album.Value = "Spotify Gold";
+
+                // Write the ID3 tag to the MP3 stream
+                mp3.WriteTag(tag, WriteConflictAction.Replace);
+            }
+        }
+
+        // Placeholder method for converting to MP3 if necessary
+        private static Stream ConvertToMp3(Stream inputStream) {
+            // Conversion logic to MP3 format goes here if necessary
+            // For now, just returning the input stream
+            return inputStream;
+        }
+
 
         /// <summary>
         /// Method that retrives all the Metadata of a Video

@@ -32,8 +32,8 @@ namespace ENT.Dto.Metadata
         public string Description { get; set; }
         public string Url { get; private set; }
         public DtoAuthorResponse Author { get; set; }
-        public DateTimeOffset UploadAt { get; set; }
-        public TimeSpan? Duration { get; set; }
+        public string UploadAt { get; set; }
+        public long? Duration { get; set; }
         public List<DtoThumbnailResponse> Thumbnails
         {
             get
@@ -58,8 +58,6 @@ namespace ENT.Dto.Metadata
             Title = "";
             Author = new();
             Description = "";
-            UploadAt = DateTimeOffset.MinValue;
-            Duration = TimeSpan.Zero;
             thumbnails = new();
             Engagement = new();
             Url = "";

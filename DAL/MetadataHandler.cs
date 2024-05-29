@@ -7,6 +7,7 @@ using ENT.Dto.Metadata;
 using ENT.Dto.Result;
 using ENT;
 using System.Net.Http;
+using Newtonsoft.Json.Serialization;
 
 namespace DAL {
     internal static class MetadataHandler {
@@ -15,10 +16,14 @@ namespace DAL {
             StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
         };
 
+        private static JsonSerializerSettings settings2 = new() {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
+
         public static string GetDataJson(Video video, bool escapeAscii = true) {
             DtoMetadataResponse dto = EntToDto(video);
             string json = escapeAscii ?
-                JsonConvert.SerializeObject(dto, Formatting.None, settings) : JsonConvert.SerializeObject(dto, Formatting.Indented);
+                JsonConvert.SerializeObject(dto, Formatting.None, settings) : JsonConvert.SerializeObject(dto, Formatting.Indented, settings2);
 
             return json;
         }
@@ -43,8 +48,7 @@ namespace DAL {
                 Id = ent.Id.Value,
                 Title = ent.Title,
                 Description = ent.Description,
-                UploadAt = ent.UploadDate,
-                Duration = ent.Duration!,
+                UploadAt = ent.UploadDate.ToString(),
                 Author = new() {
                     Id = ent.Author.ChannelId,
                     Name = ent.Author.ChannelTitle
@@ -79,6 +83,9 @@ namespace DAL {
             }
 
             dto.Thumbnails = thumbnails;
+
+            long durationLong = (long) ent.Duration!.Value.TotalSeconds;
+            dto.Duration = durationLong;
 
             return dto;
         }
