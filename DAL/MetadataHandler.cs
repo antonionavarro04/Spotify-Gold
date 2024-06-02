@@ -61,7 +61,7 @@ namespace DAL {
 
             List<DtoThumbnailResponse> thumbnails = new();
 
-            List<Thumbnail> thumbs = ent.Thumbnails.ToList<Thumbnail>();
+            List<Thumbnail> thumbs = ent.Thumbnails.ToList();
 
             foreach (Thumbnail thumb in thumbs) {
                 string url = thumb.Url;
@@ -86,6 +86,10 @@ namespace DAL {
 
             long durationLong = (long) ent.Duration!.Value.TotalSeconds;
             dto.Duration = durationLong;
+
+            // Order thumbnails by size
+            dto.Thumbnails.OrderByDescending(t => t.Size).ToList();
+            dto.Thumbnail = dto.Thumbnails.First().Url;
 
             return dto;
         }

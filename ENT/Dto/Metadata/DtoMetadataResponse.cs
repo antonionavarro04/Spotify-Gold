@@ -46,6 +46,7 @@ namespace ENT.Dto.Metadata
                 OrderThumbnails();
             }
         }
+        public string Thumbnail { get; set; }
         public DtoEngagementResponse Engagement { get; set; }
 
 
