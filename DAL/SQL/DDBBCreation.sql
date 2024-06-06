@@ -1,4 +1,5 @@
-﻿DROP TABLE Users;
+﻿DROP TABLE Tokens;
+DROP TABLE Users;
 
 CREATE TABLE Users (
     Id INT PRIMARY KEY IDENTITY,
@@ -14,4 +15,13 @@ CREATE TABLE Users (
     ActivationCode NVARCHAR(64),
 );
 
+CREATE TABLE Tokens (
+    Id INT PRIMARY KEY IDENTITY,
+    Username NVARCHAR(30) NOT NULL,
+    Token NVARCHAR(128) NOT NULL UNIQUE,
+    Expiration DATETIME NOT NULL,
+    FOREIGN KEY (Username) REFERENCES Users(Username)
+);
+
 SELECT * FROM Users;
+SELECT * FROM Tokens;

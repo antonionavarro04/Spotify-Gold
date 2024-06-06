@@ -6,6 +6,7 @@ using System.Net;
 using ENT.Dto.Metadata;
 using SpotifyGoldServer.Models;
 using Microsoft.AspNetCore.Authorization;
+using COM;
 
 namespace SpotifyGoldServer.Controllers.API {
 
@@ -28,6 +29,7 @@ namespace SpotifyGoldServer.Controllers.API {
                 [FromQuery(Name = "quality")] int quality,
                 [FromQuery(Name = "appendMetadata")] bool appendMetadata = false
             ) {
+
             IActionResult result = NotFound("Id couldn't be found");
 
             ClsAudio audio = await MusicFunctions.DownloadAudio(id, quality);
@@ -53,6 +55,7 @@ namespace SpotifyGoldServer.Controllers.API {
         [SwaggerResponse(404, "Video doesn't exist")]
         [HttpGet("{id}/info")]
         public async Task<IActionResult> GetInfo(string id) {
+
             IActionResult result = NotFound("Video doesn't exist");
 
             string? json = await MusicFunctions.GetInfo(id);

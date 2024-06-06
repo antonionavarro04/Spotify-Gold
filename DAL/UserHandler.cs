@@ -159,5 +159,84 @@ namespace DAL {
                 return HttpStatusCode.InternalServerError;
             }
         }
+
+        /// <summary>
+        /// Logs in a user
+        /// </summary>
+        /// <param name="dto">User Information</param>
+        /// <returns>A newly Ticket</returns>
+        public static string? LoginUser(DtoRegister dto) {
+            string? token = null;
+
+            SqlConnection conn = ClsConnection.GetConnection(true);
+            SqlCommand cmd;
+            if (dto.Username != "") {
+                cmd = new("SELECT * FROM Users WHERE Username = @Username", conn);
+            } else {
+                cmd = new("SELECT * FROM Users WHERE Email = @Email", conn);
+            }
+            cmd.Parameters.AddWithValue("@Username", dto.Username);
+            cmd.Parameters.AddWithValue("@Email", dto.Email);
+
+            SqlDataReader? reader = null;
+
+            try {
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) {
+                    reader.Read();
+                    string? salt = reader["Salt"].ToString();
+                    string? password = reader["Password"].ToString();
+                    string? username = reader["Username"].ToString();
+                    string hashedPassword = HashPassword(dto.Password, salt!);
+
+                    if (password == hashedPassword) {
+                        token = TokenUtils.GenerateToken(dto.Username);
+
+                        // INSERT Token INTO Tokens, Exopiration of 7 days
+                        reader.Close();
+                        cmd.CommandText = "INSERT INTO Tokens (Token, Username, Expiration) VALUES (@Token, @Username, @Expiration)";
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@Token", token);
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        cmd.Parameters.AddWithValue("@Expiration", DateTime.Now.AddDays(7));
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            } finally {
+                reader?.Close();
+                conn.Close();
+            }
+
+            return token;   
+        }
+
+        public static bool CheckToken(string? token) {
+            SqlConnection conn = ClsConnection.GetConnection(true);
+            SqlCommand cmd = new("SELECT * FROM Tokens WHERE Token = @Token", conn);
+            cmd.Parameters.AddWithValue("@Token", token);
+
+            SqlDataReader? reader = null;
+
+            try {
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows) {
+                    reader.Read();
+                    DateTime expiration = (DateTime) reader["Expiration"];
+                    if (expiration > DateTime.Now) {
+                        expiration = DateTime.Now.AddDays(7); // Renew Token
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            } finally {
+                reader?.Close();
+                conn.Close();
+            }
+
+            return false;
+        }
     }
 }

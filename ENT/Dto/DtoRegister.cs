@@ -115,6 +115,10 @@ namespace ENT.Dto {
             return reason;
         }
 
+        public bool UsernameAndEmailEmpty() {
+            return string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Email);
+        }
+
         public void Trim() {
             Username = Username.Trim();
             Password = Password.Trim();

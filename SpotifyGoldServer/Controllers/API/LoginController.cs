@@ -67,5 +67,27 @@ namespace SpotifyGoldServer.Controllers.API {
 
             return reason == null ? Accepted("User valid") : BadRequest(reason);
         }
+
+        /// <summary>
+        /// Method that logs in a user, it will return a token if the user is valid
+        /// </summary>
+        /// <param name="userInfo">User to be logged in</param>
+        /// <returns>Token</returns>
+        [HttpPost]
+        [SwaggerResponse(((int) HttpStatusCode.OK), "User logged in")]
+        [SwaggerResponse(((int) HttpStatusCode.BadRequest), "User not found")]
+        [Route("login")]
+        public IActionResult Login([FromBody] DtoRegister userInfo) {
+
+            userInfo.Trim();
+            bool hasNotEnterUsernameOrEmail = userInfo.UsernameAndEmailEmpty();
+
+            if (hasNotEnterUsernameOrEmail) {
+                return BadRequest("Username or Email are required");
+            } else {
+                string? token = UserHandler.LoginUser(userInfo);
+                return token != null ? Ok(token) : NotFound("User not found");
+            }
+        }
     }
 }

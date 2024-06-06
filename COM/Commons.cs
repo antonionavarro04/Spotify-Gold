@@ -13,5 +13,7 @@ namespace COM {
         public const string WATERMARK = $"[{VENDOR}]";
 
         public const string EMAIL = "spotifygoldand@gmail.com";
+
+        public const string UNAUTHORIZED_MESSAGE = "You're Unauthorized to see this content";
     }
 }
