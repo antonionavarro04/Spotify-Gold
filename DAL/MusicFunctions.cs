@@ -118,7 +118,9 @@ namespace DAL {
             try {
                 video = await youtube.Videos.GetAsync(id);
                 json = MetadataHandler.GetDataJson(video, false);
-            } catch (Exception) {
+                LogHandler.WriteToDDBB(new ClsLog("YoutubeController", json));
+            } catch (Exception e) {
+                LogHandler.WriteToDDBB(new ClsLog("YoutubeController", e.Message));
                 json = null;
             }
 

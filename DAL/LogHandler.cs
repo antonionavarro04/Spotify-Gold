@@ -7,7 +7,6 @@ namespace DAL {
         /// Function that writes a message to the DDBB
         /// This data will persist
         /// </summary>
-        /// <param name="logPath">Path of the file containing the logs</param>
         /// <param name="message">Thing to write</param>
         /// <returns></returns>
         public static int WriteToDDBB(ClsLog message) {
@@ -17,7 +16,7 @@ namespace DAL {
 
             try {
                 query.Connection = conn;
-                query.CommandText = "INSERT INTO Log (Date, Receiver, Message) VALUES (@Date, @Receiver, @Message)";
+                query.CommandText = "INSERT INTO Logs (Date, Receiver, Message) VALUES (@Date, @Receiver, @Message)";
                 query.Parameters.AddWithValue("@Date", message.Date);
                 query.Parameters.AddWithValue("@Receiver", message.Receiver);
                 query.Parameters.AddWithValue("@Message", message.Message);
